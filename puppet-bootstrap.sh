@@ -10,4 +10,4 @@ sudo apt-get -y install puppet
 git clone https://github.com/morningwoodsoftware/devops ~/devops
 
 # execute puppet on the manifest.
-sudo puppet apply ~/devops/puppet/init.pp --modulepath ~/devops/puppet/modules
+~/devops/puppet-exec.sh
