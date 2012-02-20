@@ -1,7 +1,6 @@
-class sshd {
+class server::sshd {
     package { 'openssh-server':
         ensure => present,
-        before => File['sshd_config'],
     }
 
     file { 'sshd_config':
@@ -10,10 +9,11 @@ class sshd {
         owner => 'root',
         group => 'root',
         mode => 600,
-        source => 'puppet:///modules/ssh/sshd_config',
+        require => Package['openssh-server'],
+        source => 'puppet:///modules/server/sshd_config',
     }
 
-    service { 'sshd':
+    service { 'ssh':
         ensure => running,
         enable => true,
         hasrestart => true,

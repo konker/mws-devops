@@ -1,3 +1,3 @@
-include server-base
 
-class {'server-base':}
+class {'server::sshd':}
+class {'server::base':}
