@@ -1,5 +1,3 @@
-$captain = 'captain'
-
 class { 'sudo::sudo':}
 class { 'ssh::sshd':}
 
@@ -8,6 +6,6 @@ class { 'server::base':
     password => $password,
 }
 
-class { 'workstations::dotfiles':
+class { 'workstation::dotfiles':
     user => $captain,
 }

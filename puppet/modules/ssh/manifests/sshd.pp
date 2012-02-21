@@ -1,4 +1,5 @@
 class server::sshd {
+
     package { 'openssh-server':
         ensure => present,
     }
