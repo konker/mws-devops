@@ -1,2 +1,1 @@
-include server::base
-include server::sshd
+# needed to load module
