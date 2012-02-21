@@ -1,3 +1,13 @@
+$captain = 'captain'
 
-class {'server::sshd':}
-class {'server::base':}
+class { 'sudo::sudo':}
+class { 'ssh::sshd':}
+
+class { 'server::base': 
+    user => $captain,
+    password => $password,
+}
+
+class { 'workstations::dotfiles':
+    user => $captain,
+}
