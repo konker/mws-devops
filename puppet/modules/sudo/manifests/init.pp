@@ -1,4 +1,4 @@
-class sudo {
+class sudo::sudo {
 
     package { sudo: ensure => latest }
 

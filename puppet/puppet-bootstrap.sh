@@ -10,4 +10,4 @@ sudo apt-get -y install puppet
 git clone https://github.com/morningwoodsoftware/devops ~/devops
 
 # execute puppet on the manifest.
-~/devops/puppet/puppet-exec.sh mothership
+echo "~/devops/puppet/puppet-exec.sh mothership <password>"

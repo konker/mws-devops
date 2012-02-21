@@ -1,4 +1,4 @@
-class server::sshd {
+class ssh::sshd {
 
     package { 'openssh-server':
         ensure => present,
@@ -11,7 +11,7 @@ class server::sshd {
         group => 'root',
         mode => 600,
         require => Package['openssh-server'],
-        source => 'puppet:///modules/server/sshd_config',
+        source => 'puppet:///modules/ssh/sshd_config',
     }
 
     service { 'ssh':
