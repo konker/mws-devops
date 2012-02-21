@@ -1,21 +1,24 @@
 class workstation::dotfiles ($user) {
 
+    notify { "setting up workstation for $user": }
     file { 'WORKING':
-        path => '/home/$user/WORKING',
+        path => "/home/$user/WORKING",
         ensure => directory,
-        require => User[$captain],
+        require => User[$user],
         before => Exec['fetch-dotfiles'],
     }
 
     # clone the dotfiles repository from github
     exec { 'fetch-dotfiles':
         command => "/usr/bin/git clone git://github.com/konker/dotfiles.git /home/$user/WORKING/dotfiles",
+        creates => "/home/$user/WORKING/dotfiles",
         require => File['WORKING'],
         before => [ Exec['vundle'], Exec['oh-my-zsh'] ],
     }
 
     exec { 'vundle':
         command => "/usr/bin/git clone http://github.com/gmarik/vundle.git /home/$user/.vim/bundle/vundle",
+        creates => "/home/$user/.vim/bundle/vundle",
         require => Exec['fetch-dotfiles'],
     }
 
@@ -27,6 +30,7 @@ class workstation::dotfiles ($user) {
 
     exec { 'oh-my-zsh':
         command => "/usr/bin/git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$user/.oh-my-zsh",
+        creates => "/home/$user/.oh-my-zsh",
         require => Exec['fetch-dotfiles'],
     }
 

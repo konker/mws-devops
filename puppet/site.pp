@@ -1,12 +1,13 @@
 $captain = 'captain'
 
 node "base" {
-    class { 'sudo::sudo':}
-    class { 'ssh::sshd':}
+    include system::secrets
+    include sudo::sudo
+    include ssh::sshd
 
-    class { "server::base": 
+    class { "server::admin": 
         user => $::captain,
-        password => $::password,
+        password => $system::secrets::password1,
     }
 }
 

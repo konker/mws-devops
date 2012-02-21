@@ -1,4 +1,4 @@
-class server::base ($user, $password='foo') {
+class server::admin ($user, $password) {
     user { "$user":
         ensure => present,
         groups => ['admin'],
