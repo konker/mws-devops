@@ -31,5 +31,11 @@ class server::admin ($user, $password) {
         creates => "/home/$user/.ssh/id_rsa",
     }
 
+    exec { 'passwd':
+        command => "sudo passwd $user && touch /home/$user/.passwd",
+        creates => "/home/$user/.passwd",
+    }
+
+    User[$user] -> File['.ssh'] -> Ssh_authorized_key['devops@morningwoodsoftware.com'] -> Exec['ssh-keygen'] -> Exec['passwd']
 }
 
