@@ -1,11 +1,7 @@
-define server::admin ($user, $public_key) {
-    package { "zsh":
-        ensure => present,
-    }
+define workstation::user ($user, $public_key) {
 
     user { "$user":
         ensure => present,
-        groups => ['admin'],
         home => "/home/$user",
         shell => '/bin/zsh',
         managehome => true,
