@@ -1,7 +1,4 @@
 define user::user ($user, $groups, $public_key) {
-    package { "zsh":
-        ensure => present,
-    }
 
     user { "$user":
         ensure => present,
