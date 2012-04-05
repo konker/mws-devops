@@ -1,4 +1,4 @@
-define workstation::dotfiles ($user) {
+define user::dotfiles ($user) {
 
     notify { "setting up workstation for $user": }
     file { "$user/WORKING":
