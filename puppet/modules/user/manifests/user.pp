@@ -28,7 +28,7 @@ define user::user ($user, $groups, $public_key) {
     }
 
     exec { "$user/expire-password":
-        command => "sudo chage -d 0 $user",
+        command => "sudo /usr/bin/chage -d 0 $user",
     }
 
     # ordering
