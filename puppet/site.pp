@@ -6,6 +6,7 @@ $public_key = 'AAAAB3NzaC1yc2EAAAABIwAAAQEAu73i+JZ/KhqdAVYCkzQEGAzh14jpGa3m3V8y/
 node "base" {
     include sudo::sudo
     include ssh::sshd
+    include base::user
 }
 
 node "sputnik", "mothership" inherits "base" {
@@ -22,7 +23,7 @@ node "sputnik", "mothership" inherits "base" {
 
     user::user { "$::workstation_user": 
         user       => $::workstation_user,
-        groups     => ['admin'],
+        groups     => ['user'],
         public_key => $::public_key,
     }
 
