@@ -1,11 +1,11 @@
-define server::admin ($user, $public_key) {
+define user::user ($user, $groups, $public_key) {
     package { "zsh":
         ensure => present,
     }
 
     user { "$user":
         ensure => present,
-        groups => ['admin'],
+        groups => $groups,
         home => "/home/$user",
         shell => '/bin/zsh',
         managehome => true,
@@ -30,10 +30,15 @@ define server::admin ($user, $public_key) {
         creates => "/home/$user/.ssh/id_rsa",
     }
 
+    exec { "$user/expire-password":
+        command => "sudo chage -d 0 $user",
+    }
+
     # ordering
     User[$user]
         -> File["$user/.ssh"] 
         -> Ssh_authorized_key["${user}@morningwoodsoftware.com"] 
         -> Exec["$user/ssh-keygen"]
+        -> Exec["$user/expire-password"]
 }
 
