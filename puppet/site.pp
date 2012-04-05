@@ -23,7 +23,7 @@ node "sputnik", "mothership" inherits "base" {
 
     user::user { "$::workstation_user": 
         user       => $::workstation_user,
-        groups     => ['user'],
+        groups     => ['users'],
         public_key => $::public_key,
     }
 
