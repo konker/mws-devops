@@ -60,5 +60,13 @@ define user::dotfiles ($user) {
         group => $user,
         require => Exec["$user/fetch-dotfiles"],
     }
+
+    file { "/home/$user/.tmux.conf":
+        ensure => link,
+        target => "/home/$user/WORKING/dotfiles/.tmux.conf",
+        owner => $user,
+        group => $user,
+        require => Exec["$user/fetch-dotfiles"],
+    }
 }
 

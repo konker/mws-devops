@@ -1,0 +1,40 @@
+
+# Enumerate all the upstream servers here
+upstream backends-noughttonine {
+    server 127.0.0.1:9000;
+}
+
+
+server {
+    listen [::]:80 default ipv6only=on;
+
+    server_name ipv6.0-9.fi;
+
+    access_log /home/konker/www/ipv6.0-9.fi/logs/access.log;
+    error_log /home/konker/www/ipv6.0-9.fi/logs/error.log;
+
+    location / {
+        root   /home/konker/www/ipv6.0-9.fi/public/;
+
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://backends-noughttonine;
+    }
+
+    location ^~ /static/ {
+        root /home/konker/www/0-9.fi/html;
+        if ($query_string) {
+            expires max;
+        }
+    }
+    location = /favicon.ico {
+        rewrite (.*) /static/favicon.ico;
+    }
+    location = /robots.txt {
+        rewrite (.*) /static/robots.txt;
+    }
+}
+

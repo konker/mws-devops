@@ -1,0 +1,21 @@
+<% if has_variable?("param_redirect_server_name") then %>
+server {
+    listen   [::]:<%= param_vhost_port %>;
+    server_name  <%= param_redirect_server_name %>;
+    rewrite ^ $scheme://<%= param_server_name %>$request_uri permanent;
+}
+<% end %>
+
+server {
+    listen   [::]:<%= param_vhost_port %>;
+    server_name <%= param_server_name %>;
+
+    access_log /home/www-data/www/<%= param_server_name %>/logs/access.log;
+    error_log /home/www-data/www/<%= param_server_name %>/logs/error.log;
+
+    index index.html;
+    location / {
+        root   /home/www-data/www/<%= param_server_name %>/public/;
+    }
+}
+

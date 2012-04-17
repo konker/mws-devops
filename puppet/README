@@ -1,0 +1,40 @@
+Puppet code
+==============================================================================
+
+Modules
+------------------------------------------------------------------------------
+
+mothership
+------------------------------------------------------------------------------
+
+- git
+- build tools
+    - ???
+    - g++, etc
+
+- haskell
+
+- apache
+    - OR nginx??
+    - virtual hosts
+    - passenger?
+
+- python
+    - tornado?
+        - or is creamertweet self-contained?
+- ruby 1.9
+- java
+    - jython
+    - groovy?
+- node
+
+- varnish?
+- haproxy?
+
+- postgresql
+- redis?
+
+- would like apps to be deployable with e.g. capistrano, fabric
+    - does this need anything special?
+
+
