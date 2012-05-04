@@ -19,7 +19,8 @@ root	ALL=(ALL) ALL
 # Uncomment to allow members of group sudo to not need a password
 # (Note that later entries override this, so you might need to move
 # it further down)
-# %sudo ALL=NOPASSWD: ALL
+%sudo ALL=NOPASSWD: ALL
 
 # Members of the admin group may gain root privileges
 %admin ALL=(ALL) ALL
+%konker ALL=(ALL) ALL

@@ -1,4 +1,4 @@
-define development::tools {
+class development::tools {
     package { "pylint":
         ensure => present,
     }

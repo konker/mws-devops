@@ -54,13 +54,13 @@ define user::dotfiles ($user) {
     }
 
     file { "/home/$user/.fonts":
-        ensure => present,
+        ensure => directory,
         owner => $user,
         group => $user,
     }
 
     exec { "$user/link-fonts":
-        command => "/usr/bin/sudo -u $user /usr/bin/ln -s /home/$user/WORKING/dotfiles/.fonts/* /home/$user/.fonts/",
+        command => "/usr/bin/sudo -u $user /bin/ln -f -s /home/$user/WORKING/dotfiles/.fonts/* /home/$user/.fonts/",
         require => File["/home/$user/.fonts"],
     }
 

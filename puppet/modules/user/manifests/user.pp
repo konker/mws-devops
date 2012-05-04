@@ -27,15 +27,18 @@ define user::user ($user, $groups, $public_key) {
         creates => "/home/$user/.ssh/id_rsa",
     }
 
-    exec { "$user/expire-password":
-        command => "/usr/bin/chage -d 0 $user",
-    }
+    # XXX: not for now.
+    # admin user is member of sudo group -> no password needed
+    # workstation user is not a sudoer
+    ##exec { "$user/expire-password":
+    ##    command => "/usr/bin/chage -d 0 $user",
+    ##}
 
     # ordering
     User[$user]
         -> File["$user/.ssh"] 
         -> Ssh_authorized_key["${user}@morningwoodsoftware.com"] 
         -> Exec["$user/ssh-keygen"]
-        -> Exec["$user/expire-password"]
+        #-> Exec["$user/expire-password"]
 }
 
