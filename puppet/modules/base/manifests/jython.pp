@@ -1,4 +1,4 @@
-class base::python {
+class base::jython {
 
     package { "jython":
         ensure => present,

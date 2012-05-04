@@ -27,6 +27,8 @@ define user::user ($user, $groups, $public_key) {
         creates => "/home/$user/.ssh/id_rsa",
     }
 
+    # FIXME: expires the password on every run
+    #           - maybe check for a file or something?
     exec { "$user/expire-password":
         command => "/usr/bin/chage -d 0 $user",
     }

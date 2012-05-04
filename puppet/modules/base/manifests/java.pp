@@ -1,6 +1,6 @@
 class base::java {
 
-    package { "openjdk":
+    package { "openjdk-6-jdk":
         ensure => present,
     }
 }

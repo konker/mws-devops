@@ -1,7 +1,3 @@
-#
-# doc
-#
-
 class server::nginx {
     $param_nginx_user = $::nginx_user ? {
         undef   => 'www-data',

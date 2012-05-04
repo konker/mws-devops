@@ -4,7 +4,7 @@ class base::ruby {
         ensure => present,
     }
 
-    package { "ruby1.9-dev":
+    package { "ruby1.9*-dev":
         ensure => present,
     }
 
