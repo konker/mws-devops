@@ -11,6 +11,8 @@ node "base" {
 
 node "sputnik", "mothership" inherits "base" {
 
+    class { 'development::tools': }
+
     user::user { "$::admin_user": 
         user       => $::admin_user,
         groups     => ['admin'],
@@ -30,5 +32,4 @@ node "sputnik", "mothership" inherits "base" {
     user::dotfiles { "${::workstation_user}_dotfiles":
         user => $::workstation_user,
     }
-}
 

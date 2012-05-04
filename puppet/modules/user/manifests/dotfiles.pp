@@ -53,6 +53,17 @@ define user::dotfiles ($user) {
         require => Exec["$user/fetch-dotfiles"],
     }
 
+    file { "/home/$user/.fonts":
+        ensure => present,
+        owner => $user,
+        group => $user,
+    }
+
+    exec { "$user/link-fonts":
+        command => "/usr/bin/sudo -u $user /usr/bin/ln -s /home/$user/WORKING/dotfiles/.fonts/* /home/$user/.fonts/",
+        require => File["/home/$user/.fonts"],
+    }
+
     file { "/home/$user/.screenrc":
         ensure => link,
         target => "/home/$user/WORKING/dotfiles/.screenrc",
