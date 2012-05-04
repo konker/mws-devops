@@ -6,8 +6,10 @@
 sudo apt-get -y install git
 sudo apt-get -y install puppet
 
+mkdir ~/WORKING
+
 # fetch the manifests.
-git clone https://github.com/morningwoodsoftware/devops ~/devops
+git clone https://github.com/morningwoodsoftware/devops ~/WORKING/devops
 
 # execute puppet on the manifest.
-echo "~/devops/puppet/puppet-exec.sh"
+echo "~/WORKING/devops/puppet/puppet-exec.sh"
