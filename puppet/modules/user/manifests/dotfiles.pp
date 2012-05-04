@@ -64,6 +64,14 @@ define user::dotfiles ($user) {
         require => File["/home/$user/.fonts"],
     }
 
+    file { "/home/$user/.gitconfig":
+        ensure => link,
+        target => "/home/$user/WORKING/dotfiles/.gitconfig",
+        owner => $user,
+        group => $user,
+        require => Exec["$user/fetch-dotfiles"],
+    }
+
     file { "/home/$user/.screenrc":
         ensure => link,
         target => "/home/$user/WORKING/dotfiles/.screenrc",
