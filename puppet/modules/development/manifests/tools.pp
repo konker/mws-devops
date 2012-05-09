@@ -1,8 +1,6 @@
 class development::tools {
 
-    notify {
-        message => "development::tools",
-    }
+    notify { "installing development::tools": }
 
     package { "vim":
         ensure => present,
