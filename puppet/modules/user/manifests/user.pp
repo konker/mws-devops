@@ -1,4 +1,4 @@
-define user::user ($user, $groups, $public_key) {
+define user::user ($user, $groups, $authorize_public_key) {
 
     user { "$user":
         ensure => present,
@@ -17,7 +17,7 @@ define user::user ($user, $groups, $public_key) {
     }
 
     ssh_authorized_key { "${user}@morningwoodsoftware.com":
-        key => $public_key,
+        key => $authorize_public_key,
         user => $user,
         type => 'ssh-rsa',
     }
