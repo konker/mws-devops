@@ -15,7 +15,7 @@ node "base" {
 
 node "sputnik", "mothership" inherits "base" {
 
-    class { 'development::tools': }
+    include development::tools
 
     user::user { "$::admin_user": 
         user       => $::admin_user,
