@@ -26,7 +26,7 @@ define user::dotfiles ($user) {
 
     # run VundleInstall without actually starting vim
     exec { "$user/vundle-install":
-        command => "/usr/bin/sudo -u $user /usr/bin/vim +BundleInstall +qall",
+        command => "/usr/bin/sudo -u $user /usr/bin/vim -u /home/$user/.vimrc +BundleInstall +qall",
         require => Exec["$user/vundle"],
     }
 
