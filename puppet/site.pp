@@ -28,7 +28,6 @@ node "sputnik", "mothership" inherits "base" {
         user       => $::admin_user,
         groups     => ['sudo'],
         authorize_public_key => $::public_key,
-        known_hosts => $hostkeys,
     }
 
     user::dotfiles { "${::admin_user}_dotfiles":
