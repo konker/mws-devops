@@ -18,9 +18,9 @@ node "base" {
 node "sputnik", "mothership" inherits "base" {
 
     include ssh::ssh
-    ssh::sshkey {
-       host => $hostkeys[0][0],
-       key  => $hostkeys[0][1],
+    ssh::sshkey { "$::hostkeys[0][0]":
+       host => $::hostkeys[0][0],
+       key  => $::hostkeys[0][1],
     }
 
     include development::tools
