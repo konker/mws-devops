@@ -22,7 +22,7 @@ node "sputnik", "mothership" inherits "base" {
        name   => $::hostkeys[0][0],
        host   => $::hostkeys[0][1],
        key    => $::hostkeys[0][2],
-       before => User::user[$::admin_user],
+       before => User::User[$::admin_user],
     }
 
     include development::tools
