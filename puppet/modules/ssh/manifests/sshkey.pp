@@ -1,9 +1,9 @@
-define ssh::sshkey ($host, $key) {
+define ssh::sshkey ($name, $host, $key) {
     notify { "sshkey $host":
         message => "Adding sshkey for $host",
     }
 
-    sshkey { "$host":
+    sshkey { "$name":
         type => ssh-rsa,
         key => $key,
         ensure => present,
