@@ -13,7 +13,7 @@ define user::devops ($user) {
     exec { "$user/add-devops-remote":
         command => "/usr/bin/sudo -u $user /usr/bin/env HOME=/home/$user /usr/bin/git remote set-url origin git@github.com:morningwoodsoftware/devops.git",
         creates => "/home/$user/WORKING/devops",
-        require => File["$user/WORKING"],
+        require => Exec["$user/fetch-devops"],
     }
 }
 
