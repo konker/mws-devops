@@ -9,7 +9,7 @@ class ssh::sshd {
         ensure => file,
         owner => 'root',
         group => 'root',
-        mode => 600,
+        mode => 644,
         require => Package['openssh-server'],
         source => 'puppet:///modules/ssh/sshd_config',
     }
