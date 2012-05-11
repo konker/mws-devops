@@ -39,6 +39,7 @@ node "sputnik", "mothership" inherits "base" {
 
     user::devops { "${::admin_user}_devops":
         user => $::admin_user,
+        require => User::Dotfiles["${::admin_user}_dotfiles"],
     }
 
     user::user { "$::workstation_user": 
