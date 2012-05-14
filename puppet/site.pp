@@ -25,7 +25,10 @@ node "sputnik", "mothership" inherits "base" {
        before => User::User[$::admin_user],
     }
 
+    include server::gitolite
     include development::tools
+
+    include user::keyshare
 
     user::user { "$::admin_user": 
         user       => $::admin_user,
