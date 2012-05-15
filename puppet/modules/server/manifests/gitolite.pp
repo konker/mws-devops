@@ -34,18 +34,10 @@ class server::gitolite {
         name => 'konker@morningwoodsoftware.com',
     }
 
-    file { "git/WORKING":
-        path => "/home/git/WORKING",
-        ensure => directory,
-        owner => 'git',
-        group => 'git',
-        require => User['git'],
+    exec { "$::admin_user/fetch-gitolite-admin":
+        command => "/usr/bin/sudo -u $::admin_user /usr/bin/env HOME=/home/$::admin_user /usr/bin/git clone git@localhost:gitolite-admin.git /home/$::admin_user/WORKING/gitolite-admin",
+        creates => "/home/$::admin_user/WORKING/gitolite-admin",
+        require => File["$::admin_user/WORKING"],
     }
-
-    #exec { "git/fetch-gitolite-admin":
-        #command => "/usr/bin/sudo -u git /usr/bin/env HOME=/home/git /usr/bin/git clone git@localhost:gitolite-admin.git /home/git/WORKING/gitolite-admin",
-        #creates => "/home/git/WORKING/gitolite-admin",
-        #require => File["git/WORKING"],
-    #}
 }
 
