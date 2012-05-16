@@ -1,8 +1,10 @@
 #!/bin/sh
 
-die() { echo "$@"; exit 1; } >&2
+LOG=~/devops.log
+
+die() { echo "$@" 2>&1 >> $LOG; exit 1; } 
 
 od=$PWD
-cd ~/WORKING/devops
-sudo ./puppet/puppet-exec.sh
+cd ~/WORKING/devops || die()
+sudo ./puppet/puppet-exec.sh 2>&1 >> ~/devops.log
 cd $od
