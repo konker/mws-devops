@@ -17,6 +17,12 @@ node "base" {
 
 node "sputnik", "mothership" inherits "base" {
 
+    file { "deleteme-test-for-post-update":
+        path    => "/home/sysadmin/deleteme",
+        ensure  => present,
+        content => "foo",
+    }
+
     include ssh::ssh
     ssh::sshkey { $::hostkeys[0][0]:
        name   => $::hostkeys[0][0],
