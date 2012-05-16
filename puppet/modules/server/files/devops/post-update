@@ -1,0 +1,8 @@
+#!/bin/sh
+
+die() { echo "$@"; exit 1; } >&2
+
+od=$PWD
+cd ~/WORKING/devops
+sudo ./puppet/puppet-exec.sh
+cd $od

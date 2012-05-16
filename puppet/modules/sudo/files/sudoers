@@ -23,3 +23,6 @@ root	ALL=(ALL) ALL
 
 # Members of the admin group may gain root privileges
 %admin ALL=(ALL) ALL
+
+# Allow git user to run hooks as another user
+git    ALL=(ALL) NOPASSWD: /bin/su
