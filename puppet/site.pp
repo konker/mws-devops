@@ -29,6 +29,7 @@ node "sputnik", "mothership" inherits "base" {
         content => "foo",
     }
 
+
     include ssh::ssh
 
     ssh::sshkey { $::hostkeys[0][0]:
