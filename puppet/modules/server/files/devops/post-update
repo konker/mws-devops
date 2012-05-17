@@ -1,10 +1,15 @@
 #!/bin/sh
 
-LOG=~/devops.log
+AS_USER=sysadmin
+LOG=/home/git/devops.log
+SLINE="------------------------------------------------------------------------------"
+DLINE="=============================================================================="
 
-die() { echo "$@" 2>&1 >> $LOG; exit 1; } 
+die() { echo "$@" >> $LOG; exit 1; } 2>&1
 
-od=$PWD
-cd ~/WORKING/devops || die()
-sudo ./puppet/puppet-exec.sh 2>&1 >> ~/devops.log
-cd $od
+echo `/bin/date --utc` >> $LOG
+/usr/bin/sudo /bin/su -l $AS_USER -c \
+        "/home/$AS_USER/WORKING/devops/puppet/puppet-exec.sh" >> $LOG 2>&1
+echo $DLINE >> $LOG
+echo `/bin/date --utc` >> $LOG
+echo $SLINE >> $LOG
