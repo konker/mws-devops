@@ -18,23 +18,7 @@ class server::gitolite {
         require => [ Package['gitolite'], User::Publish_key["${::admin_user}"] ]
     }
 
-    # authorize admin_user key for git user
-    ssh_authorized_key { "git:$::admin_user@morningwoodsoftware.com":
-        # /dev/null specified so that puppet runs before actual public key file is generated
-        key => file("/var/keyshare/${::admin_user}_id_rsa.pub", "/dev/null"),
-        user => 'git',
-        type => 'ssh-rsa',
-        name => '',
-        require => User[$::admin_user],
-    }
-
-    # authorize 'master' key for git user
-    ssh_authorized_key { "git:${::public_keys[0][0]}@morningwoodsoftware.com":
-        key => $::public_keys[0][1],
-        user => 'git',
-        type => 'ssh-rsa',
-        name => $::public_keys[0][2],
-    }
+    # NOTE: do not try to authorize keys from gitolite using ssh_authorized_key
     
     # mirror the devops repo under gitolite
     exec { "mirror-devops":

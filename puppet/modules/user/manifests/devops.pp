@@ -9,7 +9,7 @@ define user::devops ($user) {
 
     # Note: for this to be functional, syadmins public key will have to be authorized on github.com
     exec { "$user/add-devops-remote":
-        command => "/usr/bin/sudo -u $user /usr/bin/env HOME=/home/$user /usr/bin/git remote add github git@github.com:morningwoodsoftware/devops.git",
+        command => "/usr/bin/sudo -u $user /usr/bin/env HOME=/home/$user /usr/bin/git remote add github $devops_ro_git_url",
         creates => "/home/$user/WORKING/devops",
         require => Exec["$user/fetch-devops"],
     }

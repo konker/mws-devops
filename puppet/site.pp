@@ -22,7 +22,7 @@ $devops_rw_git_url = 'git@github.com:morningwoodsoftware/devops.git'
 node "base" {
     include sudo::sudo
     include ssh::sshd
-    include base::user
+    include user::base
 }
 
 node "sputnik", "mothership" inherits "base" {
@@ -32,7 +32,6 @@ node "sputnik", "mothership" inherits "base" {
         ensure  => present,
         content => "foo",
     }
-
 
     # set up ssh client
     include ssh::ssh
@@ -63,7 +62,6 @@ node "sputnik", "mothership" inherits "base" {
         user => $public_keys[0][0],
         key  => $public_keys[0][1],    
     }
-
 
     # create the admin user
     user::user { "$::admin_user": 
@@ -120,4 +118,10 @@ node "sputnik", "mothership" inherits "base" {
     # set up gitolite git repository management server
     include server::gitolite
 
+    # set up a devops working environment for the admin user
+    #[XXX: how to do this without chaning gitolite conf?]
+    #user::devops { "${::admin_user}/devops":
+    #    user    => $::admin_user,
+    #    require => [ User[$::admin_user], Class['Server::Gitolite'] ]
+    #}
 }
