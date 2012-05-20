@@ -1,5 +1,9 @@
 define user::user ($user, $groups) {
 
+    package { "zsh":
+        ensure => present,
+    }
+
     user { "$user":
         ensure => present,
         groups => $groups,

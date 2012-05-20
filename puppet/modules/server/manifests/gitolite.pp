@@ -29,12 +29,12 @@ class server::gitolite {
     }
 
     # authorize 'master' key for git user
-    #ssh_authorized_key { "git:${::public_keys[0][0]}@morningwoodsoftware.com":
-    #    key => $::public_keys[0][1],
-    #    user => 'git',
-    #    type => 'ssh-rsa',
-    #    name => 'konker@morningwoodsoftware.com',
-    #}
+    ssh_authorized_key { "git:${::public_keys[0][0]}@morningwoodsoftware.com":
+        key => $::public_keys[0][1],
+        user => 'git',
+        type => 'ssh-rsa',
+        name => $::public_keys[0][2],
+    }
     
     # mirror the devops repo under gitolite
     exec { "mirror-devops":
