@@ -123,9 +123,8 @@ node "sputnik", "mothership" inherits "base" {
     }
 
     # set up a devops working environment for the admin user
-    #[XXX: how to do this without chaning gitolite conf?]
-    #user::devops { "${::admin_user}/devops":
-    #    user    => $::admin_user,
-    #    require => [ User[$::admin_user], Class['Server::Gitolite'] ]
-    #}
+    user::devops { "${::admin_user}/devops":
+        user    => $::admin_user,
+        git_url => $::devops_rw_git_url,
+    }
 }
