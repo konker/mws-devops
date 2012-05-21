@@ -116,7 +116,11 @@ node "sputnik", "mothership" inherits "base" {
     }
 
     # set up gitolite git repository management server
-    include server::gitolite
+    include server::gitolite::gitolite
+
+    server::gitolite::conf { "gitolite-conf":
+        user => $::admin_user,
+    }
 
     # set up a devops working environment for the admin user
     #[XXX: how to do this without chaning gitolite conf?]
