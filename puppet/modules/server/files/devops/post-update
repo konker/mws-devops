@@ -1,15 +1,15 @@
 #!/bin/sh
 
 AS_USER=sysadmin
-LOG=/home/git/devops.log
+LOG=/home/git/DEVOPS.LOG
 SLINE="------------------------------------------------------------------------------"
 DLINE="=============================================================================="
 
-log() { echo "$@" } 2>&1
+log() { echo "$@" >> $LOG } 2>&1
 die() { log("$@"); exit 1; }
 
 log(`/bin/date --utc`)
-git push --mirror origin 2>&1
+git push --mirror origin >> $LOG 2>&1
 #/usr/bin/sudo /bin/su -l $AS_USER -c \
 #    "/home/$AS_USER/WORKING/devops/puppet/puppet-exec.sh" >> $LOG 2>&1
 log($DLINE)

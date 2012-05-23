@@ -1,12 +1,16 @@
 
 class server::gitolite::gitolite {
 
-    user { "git":
-        ensure => present,
-        home => "/home/git",
-        shell => '/bin/bash',
-        managehome => true,
+    user::user { "git":
+        user   => 'git',
+        groups => [],
     }
+    #user { "git":
+    #    ensure => present,
+    #    home => "/home/git",
+    #    shell => '/bin/bash',
+    #    managehome => true,
+    #}
 
     package { "gitolite":
         ensure => present,
