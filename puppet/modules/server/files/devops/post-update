@@ -5,11 +5,13 @@ LOG=/home/git/devops.log
 SLINE="------------------------------------------------------------------------------"
 DLINE="=============================================================================="
 
-die() { echo "$@" >> $LOG; exit 1; } 2>&1
+log() { echo "$@" } 2>&1
+die() { log("$@"); exit 1; }
 
-echo `/bin/date --utc` >> $LOG
-/usr/bin/sudo /bin/su -l $AS_USER -c \
-        "/home/$AS_USER/WORKING/devops/puppet/puppet-exec.sh" >> $LOG 2>&1
-echo $DLINE >> $LOG
-echo `/bin/date --utc` >> $LOG
-echo $SLINE >> $LOG
+log(`/bin/date --utc`)
+git push --mirror origin 2>&1
+#/usr/bin/sudo /bin/su -l $AS_USER -c \
+#    "/home/$AS_USER/WORKING/devops/puppet/puppet-exec.sh" >> $LOG 2>&1
+log($DLINE)
+log(`/bin/date --utc`)
+log($SLINE)
