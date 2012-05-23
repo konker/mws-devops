@@ -17,7 +17,7 @@ define user::user ($user, $groups) {
     }
 
     exec { "$user/ssh-keygen":
-        command => "/usr/bin/sudo -u $user /usr/bin/env HOME=/home/$user /usr/bin/ssh-keygen -q -f /home/$user/.ssh/id_rsa -t rsa -N '' -C ${user}@morningwoodsoftware.com",
+        command => "exec-as $user ssh-keygen -q -f /home/$user/.ssh/id_rsa -t rsa -N '' -C ${user}@morningwoodsoftware.com",
         creates => "/home/$user/.ssh/id_rsa.pub",
     }
 

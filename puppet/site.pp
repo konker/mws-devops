@@ -19,10 +19,13 @@ $hostkeys = [
 $devops_ro_git_url = 'https://github.com/morningwoodsoftware/devops.git'
 $devops_rw_git_url = 'git@github.com:morningwoodsoftware/devops.git'
 
+Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
+
 node "base" {
     include sudo::sudo
     include ssh::sshd
     include user::base
+    include base::bin
 }
 
 node "sputnik", "mothership" inherits "base" {

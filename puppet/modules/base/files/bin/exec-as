@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+   echo "No user specified. Aborting"
+   exit 1
+fi
+
+if [ -z "$2" ]; then
+   echo "Nothing to exec. Aborting"
+   exit 2
+fi
+
+USER=$1
+ME=`/usr/bin/whoami`
+
+shift
+
+if [ "$USER" = "$ME" ]; then
+    "$@"
+else
+    /usr/bin/sudo -u $USER /usr/bin/env HOME=/home/$USER "$@"
+fi

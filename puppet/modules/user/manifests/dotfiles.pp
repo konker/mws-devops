@@ -12,26 +12,26 @@ define user::dotfiles ($user) {
 
     # clone the dotfiles repository from github
     exec { "$user/fetch-dotfiles":
-        command => "/usr/bin/sudo -u $user /usr/bin/git clone git://github.com/konker/dotfiles.git /home/$user/WORKING/dotfiles",
+        command => "exec-as $user git clone git://github.com/konker/dotfiles.git /home/$user/WORKING/dotfiles",
         creates => "/home/$user/WORKING/dotfiles",
         require => File["$user/WORKING"],
         before => [ Exec["$user/vundle"], Exec["$user/oh-my-zsh"] ],
     }
 
     exec { "$user/vundle":
-        command => "/usr/bin/sudo -u $user /usr/bin/git clone http://github.com/gmarik/vundle.git /home/$user/.vim/bundle/vundle",
+        command => "exec-as $user git clone http://github.com/gmarik/vundle.git /home/$user/.vim/bundle/vundle",
         creates => "/home/$user/.vim/bundle/vundle",
         require => Exec["$user/fetch-dotfiles"],
     }
 
     # run VundleInstall without actually starting vim
     exec { "$user/vundle-install":
-        command => "/usr/bin/sudo -u $user /usr/bin/env HOME=/home/$user /usr/bin/vim +BundleInstall +qall",
+        command => "exec-as $user vim +BundleInstall +qall",
         require => Exec["$user/vundle"],
     }
 
     exec { "$user/oh-my-zsh":
-        command => "/usr/bin/sudo -u $user /usr/bin/git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$user/.oh-my-zsh",
+        command => "exec-as $user git clone git://github.com/robbyrussell/oh-my-zsh.git /home/$user/.oh-my-zsh",
         creates => "/home/$user/.oh-my-zsh",
         require => Exec["$user/fetch-dotfiles"],
     }
@@ -60,7 +60,7 @@ define user::dotfiles ($user) {
     }
 
     exec { "$user/link-fonts":
-        command => "/usr/bin/sudo -u $user /bin/ln -f -s /home/$user/WORKING/dotfiles/.fonts/* /home/$user/.fonts/",
+        command => "exec-as $user ln -f -s /home/$user/WORKING/dotfiles/.fonts/* /home/$user/.fonts/",
         require => File["/home/$user/.fonts"],
     }
 
