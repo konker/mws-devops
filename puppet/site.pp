@@ -30,12 +30,6 @@ node "base" {
 
 node "sputnik", "mothership" inherits "base" {
 
-    file { "deleteme-test-for-post-update":
-        path    => "/home/sysadmin/deleteme",
-        ensure  => present,
-        content => "foo",
-    }
-
     # set up ssh client
     include ssh::ssh
 
