@@ -5,12 +5,18 @@ class server::gitolite::gitolite {
         user   => 'git',
         groups => [],
     }
-    #user { "git":
-    #    ensure => present,
-    #    home => "/home/git",
-    #    shell => '/bin/bash',
-    #    managehome => true,
-    #}
+
+    # publish the git user's public key
+    user::publish_key { 'git':
+        user    => 'git',
+        require => User::User['git'],
+    }
+
+    # set up a working environment from the git user
+    user::dotfiles { 'git_dotfiles':
+        user    => 'git',
+        require => User::User['git'],
+    }
 
     package { "gitolite":
         ensure => present,
@@ -29,6 +35,12 @@ class server::gitolite::gitolite {
         command => "exec-as git git clone --mirror $::devops_ro_git_url /home/git/repositories/devops.git",
         creates => "/home/git/repositories/devops.git",
         require => Exec['gl-setup'],
+    }
+    
+    # set the origin remote url to rw version
+    exec { "rw-origin-devops":
+        command => "exec-as git git remote set-url origin $::devops_rw_git_url",
+        require => Exec['mirror-devops'],
     }
 
     # create git post-update hook for the devops repo under gitolte
