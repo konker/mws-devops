@@ -7,6 +7,7 @@ define ssh::sshkey ($name, $host, $key='', $key_file='') {
         sshkey { "$name":
             type => ssh-rsa,
             key => generate('/usr/bin/cut', '-c', '9-', $key_file),
+            #key => file($key_file, '/dev/null'),
             ensure => present,
             require => Package["openssh-client"],
         }

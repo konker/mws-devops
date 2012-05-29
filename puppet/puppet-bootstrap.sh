@@ -13,5 +13,8 @@ mkdir -f ~/WORKING
 # fetch the manifests.
 git clone https://github.com/morningwoodsoftware/devops ~/WORKING/devops
 
+# make sure these files exist before puppet executes (generate checks at parse time)
+sudo touch /etc/ssh/
+
 # execute puppet on the manifest.
 echo "~/WORKING/devops/puppet/puppet-exec.sh"

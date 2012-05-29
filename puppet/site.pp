@@ -33,26 +33,11 @@ node "sputnik", "mothership" inherits "base" {
     # set up ssh client
     include ssh::ssh
 
-    # add host keys to known_hosts for the admin user
-    ssh::sshkey { $::hostkeys[0][0]:
-       name   => $::hostkeys[0][0],
-       host   => $::hostkeys[0][1],
-       key    => $::hostkeys[0][2],
-       before => User::User[$::admin_user],
-    }
-
-    ssh::sshkey { $::hostkeys[1][0]:
-       name     => $::hostkeys[1][0],
-       host     => $::hostkeys[1][1],
-       key_file => $::hostkeys[1][2],
-       before   => User::User[$::admin_user],
-    }
+    # initialize the public key sharing directory
+    include user::keyshare
 
     # set up system-wide development tools
     include development::tools
-
-    # initialize the public key sharing directory
-    include user::keyshare
 
     # publish the 'master' public key
     user::publish_key { "${public_keys[0][0]}":
@@ -84,6 +69,23 @@ node "sputnik", "mothership" inherits "base" {
     user::dotfiles { "${::admin_user}_dotfiles":
         user    => $::admin_user,
         require => User::User[$::admin_user],
+    }
+
+    # add host keys to global known_hosts
+    ssh::sshkey { $::hostkeys[0][0]:
+       name    => $::hostkeys[0][0],
+       host    => $::hostkeys[0][1],
+       key     => $::hostkeys[0][2],
+       before  => User::User[$::admin_user],
+       require => Class['Ssh::Sshd'],
+    }
+
+    ssh::sshkey { $::hostkeys[1][0]:
+       name     => $::hostkeys[1][0],
+       host     => $::hostkeys[1][1],
+       key_file => $::hostkeys[1][2],
+       before   => User::User[$::admin_user],
+       require  => Class['Ssh::Sshd'],
     }
 
     # create a non-privileged workstation user
