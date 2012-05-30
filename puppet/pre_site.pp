@@ -22,9 +22,9 @@ node "sputnik", "mothership" inherits "base" {
     include development::tools
 
     # publish the 'master' public key
-    user::publish_key { "${shared::consts::public_keys[0][0]}":
-        user => $shared::consts::public_keys[0][0],
-        key  => $shared::consts::public_keys[0][1],    
+    shared::publish_key { "${shared::consts::public_keys[0][0]}":
+        label => $shared::consts::public_keys[0][0],
+        key   => $shared::consts::public_keys[0][1],    
     }
 
     # create the admin user

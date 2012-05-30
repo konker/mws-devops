@@ -1,21 +1,26 @@
-define ssh::sshkey ($name, $host, $key='', $key_file='') {
+define ssh::sshkey ($name, $host, $key='', $keyfile='') {
     notify { "sshkey $host":
         message => "Adding sshkey for $host",
     }
 
-    if $key_file != '' {
-        sshkey { "$name":
-            type => ssh-rsa,
-            #key => generate('/usr/bin/cut', '-c', '9-', $key_file),
-            key => file($key_file, '/dev/null'),
-            ensure => present,
-            require => Package["openssh-client"],
+    if $keyfile == '' {
+        if $key == '' {
+            notify { "sshkey failed for ${host}: no key or keyfile given": }
+        }
+        else {
+            sshkey { "$name":
+                type => ssh-rsa,
+                key => $key,
+                ensure => present,
+                require => Package["openssh-client"],
+            }
         }
     }
     else {
         sshkey { "$name":
             type => ssh-rsa,
-            key => $key,
+            #key => generate('/usr/bin/cut', '-c', '9-', $keyfile),
+            key => file($keyfile, '/dev/null'),
             ensure => present,
             require => Package["openssh-client"],
         }

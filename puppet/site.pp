@@ -1,41 +1,33 @@
 
 Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
-node "sputnik", "mothership" inherits "base" {
+node "sputnik", "mothership" {
 
     include shared::consts
     include shared::keyshare
 
     # publish the admin user's public key
-    user::publish_key { "$shared::consts::admin_user":
+    shared::publish_key { "$shared::consts::admin_user":
         label   => $shared::consts::admin_user,
         user    => $shared::consts::admin_user,
         require => User::User[$shared::consts::admin_user],
     }
 
     # publish the workstation user's public key
-    user::publish_key { "$shared::consts::workstation_user":
+    shared::publish_key { "$shared::consts::workstation_user":
         label   => $shared::consts::workstation_user,
         user    => $shared::consts::workstation_user,
         require => User::User[$shared::consts::workstation_user],
     }
 
     # publish the host keys
-    user::publish_key { $shared::consts::hostkeys[0][0]:
-        label   => $shared::consts::hostkeys[0][0],
-        key     => $shared::consts::hostkeys[0][2],
-        require => User::User[$shared::consts::workstation_user],
-    }
-
-    # publish the host keys
-    user::publish_key { $shared::consts::hostkeys[0][0]:
+    shared::publish_key { $shared::consts::hostkeys[0][0]:
         label   => $shared::consts::hostkeys[0][0],
         key     => $shared::consts::hostkeys[0][2],
         keyfile => $shared::consts::hostkeys[0][3],
     }
 
-    # publish the host keys
-    user::publish_key { $shared::consts::hostkeys[1][0]:
+    shared::publish_key { $shared::consts::hostkeys[1][0]:
         label   => $shared::consts::hostkeys[1][0],
         key     => $shared::consts::hostkeys[1][2],
         keyfile => $shared::consts::hostkeys[1][3],

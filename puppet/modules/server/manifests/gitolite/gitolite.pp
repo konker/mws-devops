@@ -1,7 +1,7 @@
 
 class server::gitolite::gitolite {
 
-    include shared::consts.pp
+    include shared::consts
     include shared::keyshare
 
     user::user { "git":
@@ -10,7 +10,8 @@ class server::gitolite::gitolite {
     }
 
     # publish the git user's public key
-    user::publish_key { 'git':
+    shared::publish_key { 'git':
+        label   => 'git',
         user    => 'git',
         require => User::User['git'],
     }
