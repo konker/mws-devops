@@ -11,7 +11,7 @@ class server::gitolite::gitolite {
     exec { "gl-setup":
         command => "exec-as git gl-setup -q ${shared::keyshare::keyshare_path}/${shared::consts::admin_user}_id_rsa.pub",
         creates => "/home/git/.gitolite",
-        require => [ Package['gitolite'], User::Publish_key["${shared::consts::admin_user}"] ]
+        require => [ Package['gitolite'], Shared::Publish_key["${shared::consts::admin_user}"] ]
     }
 
     # NOTE: do not try to authorize keys from gitolite using ssh_authorized_key

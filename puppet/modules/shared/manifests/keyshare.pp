@@ -11,7 +11,7 @@ class shared::keyshare {
         ensure  => directory,
         owner   => $shared::consts::admin_user,
         group   => $shared::consts::admin_user,
-        mode    => 700,
+        mode    => 755,
         require => User[$shared::consts::admin_user],
     }
 }

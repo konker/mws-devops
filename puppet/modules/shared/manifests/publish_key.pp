@@ -13,7 +13,7 @@ define shared::publish_key ($label, $user='', $key='', $keyfile='') {
                     content => generate('/usr/bin/cut', '-c', '9-', "/home/$user/.ssh/id_rsa.pub"),
                     owner   => $shared::consts::admin_user,
                     group   => $shared::consts::admin_user,
-                    mode    => 600,
+                    mode    => 644,
                     require => File['keyshare'],
                 }
             }
@@ -25,7 +25,7 @@ define shared::publish_key ($label, $user='', $key='', $keyfile='') {
                 content => $key,
                 owner   => $shared::consts::admin_user,
                 group   => $shared::consts::admin_user,
-                mode    => 600,
+                mode    => 644,
                 require => File['keyshare'],
             }
         }
@@ -37,7 +37,7 @@ define shared::publish_key ($label, $user='', $key='', $keyfile='') {
             content => generate('/usr/bin/cut', '-c', '9-', $keyfile),
             owner   => $shared::consts::admin_user,
             group   => $shared::consts::admin_user,
-            mode    => 600,
+            mode    => 644,
             require => File['keyshare'],
         }
     }

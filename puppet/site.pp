@@ -3,6 +3,9 @@ Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 node "sputnik", "mothership" {
 
+    class { "base": }
+    class { "base::pre": }
+
     include shared::consts
     include shared::keyshare
 
@@ -55,16 +58,16 @@ node "sputnik", "mothership" {
        require  => Class['Ssh::Sshd'],
     }
 
-    # set up gitolite git repository management server
-    include server::gitolite::gitolite
-
-    server::gitolite::conf { "gitolite-conf":
-        user => $shared::consts::admin_user,
-    }
-
     # set up a devops working environment for the admin user
     user::devops { "${::admin_user}/devops":
         user    => $shared::consts::admin_user,
         git_url => $shared::consts::devops_rw_git_url,
+    }
+
+    # set up gitolite git repository management server
+    include server::gitolite::gitolite
+
+    server::gitolite::conf { 'gitolite-conf':
+        user => $shared::consts::admin_user,
     }
 }
