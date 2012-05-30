@@ -41,13 +41,19 @@ node "sputnik", "mothership" inherits "base" {
         require              => User::User[$shared::consts::admin_user],
     }
 
+    # set up a working environment for the admin user
+    user::dotfiles { "${::admin_user}_dotfiles":
+        user    => $shared::consts::admin_user,
+        require => User::User[$shared::consts::admin_user],
+    }
+
     # create a non-privileged workstation user
     user::user { "$shared::consts::workstation_user": 
         user       => $shared::consts::workstation_user,
         groups     => ['users'],
     }
 
-     # authorize the 'master' key for the workstation user
+    # authorize the 'master' key for the workstation user
     user::authorize_key { "$shared::consts::workstation_user":
         user                 => $shared::consts::workstation_user,
         key_label            => $shared::consts::public_keys[0][0],
@@ -59,5 +65,17 @@ node "sputnik", "mothership" inherits "base" {
     user::dotfiles { "${::workstation_user}_dotfiles":
         user    => $shared::consts::workstation_user,
         require => User::User[$shared::consts::workstation_user],
+    }
+
+    # create the git user
+    user::user { "git":
+        user   => 'git',
+        groups => [],
+    }
+
+    # set up a working environment from the git user
+    user::dotfiles { 'git_dotfiles':
+        user    => 'git',
+        require => User::User['git'],
     }
 }

@@ -4,24 +4,6 @@ class server::gitolite::gitolite {
     include shared::consts
     include shared::keyshare
 
-    user::user { "git":
-        user   => 'git',
-        groups => [],
-    }
-
-    # publish the git user's public key
-    shared::publish_key { 'git':
-        label   => 'git',
-        user    => 'git',
-        require => User::User['git'],
-    }
-
-    # set up a working environment from the git user
-    user::dotfiles { 'git_dotfiles':
-        user    => 'git',
-        require => User::User['git'],
-    }
-
     package { "gitolite":
         ensure => present,
     }

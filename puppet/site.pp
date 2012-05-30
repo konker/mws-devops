@@ -20,6 +20,13 @@ node "sputnik", "mothership" {
         require => User::User[$shared::consts::workstation_user],
     }
 
+    # publish the git user's public key
+    shared::publish_key { 'git':
+        label   => 'git',
+        user    => 'git',
+        require => User::User['git'],
+    }
+
     # publish the host keys
     shared::publish_key { $shared::consts::hostkeys[0][0]:
         label   => $shared::consts::hostkeys[0][0],
