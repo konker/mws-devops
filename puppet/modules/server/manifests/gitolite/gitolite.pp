@@ -1,6 +1,9 @@
 
 class server::gitolite::gitolite {
 
+    include shared::consts.pp
+    include shared::keyshare
+
     user::user { "git":
         user   => 'git',
         groups => [],
@@ -23,23 +26,23 @@ class server::gitolite::gitolite {
     }
 
     exec { "gl-setup":
-        command => "exec-as git gl-setup -q /var/keyshare/${::admin_user}_id_rsa.pub",
+        command => "exec-as git gl-setup -q ${shared::keyshare::keyshare_path}/${shared::consts::admin_user}_id_rsa.pub",
         creates => "/home/git/.gitolite",
-        require => [ Package['gitolite'], User::Publish_key["${::admin_user}"] ]
+        require => [ Package['gitolite'], User::Publish_key["${shared::consts::admin_user}"] ]
     }
 
     # NOTE: do not try to authorize keys from gitolite using ssh_authorized_key
     
     # mirror the devops repo under gitolite
     exec { "mirror-devops":
-        command => "exec-as git git clone --mirror $::devops_ro_git_url /home/git/repositories/devops.git",
+        command => "exec-as git git clone --mirror $shared::consts::devops_ro_git_url /home/git/repositories/devops.git",
         creates => "/home/git/repositories/devops.git",
         require => Exec['gl-setup'],
     }
     
     # set the origin remote url to rw version
     exec { "rw-origin-devops":
-        command => "exec-as git git remote set-url origin $::devops_rw_git_url",
+        command => "exec-as git git remote set-url origin $shared::consts::devops_rw_git_url",
         require => Exec['mirror-devops'],
     }
 
@@ -55,10 +58,10 @@ class server::gitolite::gitolite {
     }
 
     # clone the gitolite-admin repo for admin_user
-    exec { "$::admin_user/fetch-gitolite-admin":
-        command => "exec-as $::admin_user git clone git@localhost:gitolite-admin.git /home/$::admin_user/WORKING/gitolite-admin",
-        creates => "/home/$::admin_user/WORKING/gitolite-admin",
-        require => File["$::admin_user/WORKING"],
+    exec { "$shared::consts::admin_user/fetch-gitolite-admin":
+        command => "exec-as $shared::consts::admin_user git clone git@localhost:gitolite-admin.git /home/$shared::consts::admin_user/WORKING/gitolite-admin",
+        creates => "/home/$shared::consts::admin_user/WORKING/gitolite-admin",
+        require => File["$shared::consts::admin_user/WORKING"],
     }
 }
 
