@@ -44,7 +44,7 @@ class server::gitolite::gitolite {
     exec { "$shared::consts::admin_user/fetch-gitolite-admin":
         command => "exec-as $shared::consts::admin_user git clone git@localhost:gitolite-admin.git /home/$shared::consts::admin_user/WORKING/gitolite-admin",
         creates => "/home/$shared::consts::admin_user/WORKING/gitolite-admin",
-        require => File["$shared::consts::admin_user/WORKING"],
+        require => [ File["$shared::consts::admin_user/WORKING"], Exec['gl-setup'] ]
     }
 }
 
