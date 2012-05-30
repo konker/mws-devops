@@ -9,6 +9,21 @@ class base::pre {
         key   => $shared::consts::public_keys[0][1],    
     }
 
+    # publish the host keys
+    shared::publish_key { $shared::consts::hostkeys[0][0]:
+        label   => $shared::consts::hostkeys[0][0],
+        key     => $shared::consts::hostkeys[0][2],
+        keyfile => $shared::consts::hostkeys[0][3],
+        require => Class[Ssh::Sshd],
+    }
+
+    shared::publish_key { $shared::consts::hostkeys[1][0]:
+        label   => $shared::consts::hostkeys[1][0],
+        key     => $shared::consts::hostkeys[1][2],
+        keyfile => $shared::consts::hostkeys[1][3],
+        require => Class[Ssh::Sshd],
+    }
+
     # create the admin user
     user::user { "$shared::consts::admin_user": 
         user       => $shared::consts::admin_user,

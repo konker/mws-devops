@@ -30,32 +30,19 @@ node "sputnik", "mothership" {
         require => User::User['git'],
     }
 
-    # publish the host keys
-    shared::publish_key { $shared::consts::hostkeys[0][0]:
-        label   => $shared::consts::hostkeys[0][0],
-        key     => $shared::consts::hostkeys[0][2],
-        keyfile => $shared::consts::hostkeys[0][3],
-    }
-
-    shared::publish_key { $shared::consts::hostkeys[1][0]:
-        label   => $shared::consts::hostkeys[1][0],
-        key     => $shared::consts::hostkeys[1][2],
-        keyfile => $shared::consts::hostkeys[1][3],
-    }
-
     # add host keys to global known_hosts
-    ssh::sshkey { $shared::consts::hostkeys[0][0]:
-       name    => $shared::consts::hostkeys[0][0],
-       host    => $shared::consts::hostkeys[0][1],
-       keyfile => "${shared::keyshare::keyshare_path}/${shared::consts::hostkeys[0][0]}_id_rsa.pub",
-       require => Class['Ssh::Sshd'],
+    sshkey { $shared::consts::hostkeys[0][1]:
+        type => 'ssh-rsa',
+        key => file("${shared::keyshare::keyshare_path}/${shared::consts::hostkeys[0][0]}_id_rsa.pub.bare", '/dev/null'),
+        ensure => present,
+        require => [ Package["openssh-client"], Shared::Publish_key[$shared::consts::hostkeys[0][0]] ],
     }
 
-    ssh::sshkey { $shared::consts::hostkeys[1][0]:
-       name     => $shared::consts::hostkeys[1][0],
-       host     => $shared::consts::hostkeys[1][1],
-       keyfile => "${shared::keyshare::keyshare_path}/${shared::consts::hostkeys[1][0]}_id_rsa.pub",
-       require  => Class['Ssh::Sshd'],
+    sshkey { $shared::consts::hostkeys[1][1]:
+        type => 'ssh-rsa',
+        key => file("${shared::keyshare::keyshare_path}/${shared::consts::hostkeys[1][0]}_id_rsa.pub.bare", '/dev/null'),
+        ensure => present,
+        require => [ Package["openssh-client"], Shared::Publish_key[$shared::consts::hostkeys[1][0]] ],
     }
 
     # set up a devops working environment for the admin user
