@@ -45,16 +45,26 @@ node "sputnik", "mothership" {
         require => [ Package["openssh-client"], Shared::Publish_key[$shared::consts::hostkeys[1][0]] ],
     }
 
+    # set up gitolite git repository management server
+    class { "server::gitolite::gitolite": }
+
+    server::gitolite::conf { 'gitolite-conf':
+        user => $shared::consts::admin_user,
+    }
+
     # set up a devops working environment for the admin user
     user::devops { "${::admin_user}/devops":
         user    => $shared::consts::admin_user,
         git_url => $shared::consts::devops_rw_git_url,
     }
 
-    # set up gitolite git repository management server
-    include server::gitolite::gitolite
-
-    server::gitolite::conf { 'gitolite-conf':
-        user => $shared::consts::admin_user,
-    }
+    # ordering
+    Shared::Publish_key["$shared::consts::admin_user"]
+    -> Shared::Publish_key["$shared::consts::workstation_user"]
+    -> Shared::Publish_key['git']
+    -> Sshkey[$shared::consts::hostkeys[0][1]]
+    -> Sshkey[$shared::consts::hostkeys[1][1]]
+    -> Class['server::gitolite::gitolite']
+    -> Server::Gitolite::Conf['gitolite-conf']
+    -> User::Devops["${::admin_user}/devops"]
 }

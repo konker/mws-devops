@@ -1,7 +1,7 @@
 
 class base::pre {
     # set up system-wide development tools
-    include development::tools
+    class { "development::tools": }
 
     # publish the 'master' public key
     shared::publish_key { "${shared::consts::public_keys[0][0]}":

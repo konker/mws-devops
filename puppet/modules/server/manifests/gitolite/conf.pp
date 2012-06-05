@@ -7,7 +7,7 @@ define server::gitolite::conf ($user) {
     file { "${user}/gitolite-conf":
         path    => "/home/$user/WORKING/gitolite-admin/conf/gitolite.conf",
         source  => "puppet:///modules/server/gitolite/gitolite.conf",
-        require => [ Class['Server::Gitolite::Gitolite'] ],
+        require => [ Exec["$shared::consts::admin_user/fetch-gitolite-admin"] ],
     }
 
     exec { "${user}/add-gitolite-conf":
