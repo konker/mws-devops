@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exec git update-server-info
+git update-server-info
 
 AS_USER=sysadmin
 LOG=/home/git/DEVOPS.LOG
@@ -8,7 +8,7 @@ SLINE='-------------------------------------------------------------------------
 DLINE='=============================================================================='
 
 log() { echo "$@" >> $LOG; } 2>&1
-die() { logi "$@"; exit 1; }
+die() { log "$@"; exit 1; }
 
 log `/bin/date --utc`
 git push --mirror origin >> $LOG 2>&1
