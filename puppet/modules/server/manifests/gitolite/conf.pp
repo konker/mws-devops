@@ -16,7 +16,6 @@ define server::gitolite::conf ($user) {
     }
 
     exec { "${user}/commit-gitolite-conf":
-        #command => "exec-as $user git --work-tree=$work_tree --git-dir=$git_dir diff-files --quiet || exec-as $user git --work-tree=$work_tree --git-dir=$git_dir commit -am 'Puppet auto-commit Exec[${user}/Commit-gitolite-conf]'",
         command => "exec-as $user git --work-tree=$work_tree --git-dir=$git_dir commit -q -a -m 'Puppet auto-commit Exec[${user}/Commit-gitolite-conf]' || true",
         require => Exec["${user}/add-gitolite-conf"],
     }

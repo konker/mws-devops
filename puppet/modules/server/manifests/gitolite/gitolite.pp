@@ -16,16 +16,18 @@ class server::gitolite::gitolite {
 
     # NOTE: do not try to authorize keys from gitolite using ssh_authorized_key
     
+    $devops_git_tree = "/home/git/repositories/devops.git"
+
     # mirror the devops repo under gitolite
     exec { "mirror-devops":
-        command => "exec-as git git clone --mirror $shared::consts::devops_ro_git_url /home/git/repositories/devops.git",
-        creates => "/home/git/repositories/devops.git",
+        command => "exec-as git git clone --mirror $shared::consts::devops_ro_git_url $devops_git_tree",
+        creates => $devops_git_tree,
         require => Exec['gl-setup'],
     }
     
     # set the origin remote url to rw version
     exec { "rw-origin-devops":
-        command => "exec-as git git remote set-url origin $shared::consts::devops_rw_git_url",
+        command => "exec-as git git --git-dir=$devops_git_tree remote set-url origin $shared::consts::devops_rw_git_url",
         require => Exec['mirror-devops'],
     }
 
