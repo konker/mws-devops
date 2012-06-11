@@ -7,6 +7,7 @@ sudo apt-get update
 # install the minimum needed for puppet to function
 sudo apt-get -y install git
 sudo apt-get -y install puppet
+sudo apt-get -y install openssh-server
 
 mkdir -f ~/WORKING
 
