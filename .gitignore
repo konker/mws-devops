@@ -1,1 +1,2 @@
+*.pem
 puppet/modules/system/manifests/secrets.pp
