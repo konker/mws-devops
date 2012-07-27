@@ -1,0 +1,68 @@
+Plan for Chef roles for morningwoodsoftware
+==============================================================================
+
+- sysadmin
+    - user: sysadmin
+    - sshkey-gen
+    - sudoers
+    - dotfiles
+        - clone dotfiles repo
+        - symlink to ~/
+
+- workstation
+    - user: konker
+    - sshkey-gen
+    - dotfiles
+        - clone dotfiles repo
+        - symlink to ~/
+
+- development
+    - python
+    - ruby
+    - java
+    - etc
+
+- gitolite-server
+    - cookbook: gitolite
+
+- webserver
+    - user: www-data
+    - cookbook: nginx
+
+- git-web-deploy
+    - cookbook:
+        - require: gitolite
+        - require: nginx
+        - data: list of sites
+        - for each site:
+            - create: gitlote repo
+                - note: this should be mirrored in github?
+            - create: ~www-data/SERVER/<site>
+            - create: git post-update hook in repo -> deploy to site
+            - create nginx conf for site
+                - flat-site
+                - rails site?
+                - node-site?
+                - flask/bottle site?
+                - tornado-site?
+            - for !flat-site
+                - create upstart/daemon infrastructure for upstream application
+    - [what about: haproxy, varnish, memcached?]
+
+- databases
+    - postgres1ql
+    - couchdb?
+
+- jekyll
+    - cookbook?
+
+- backup
+    - tgz snapshots to S3
+        - covers:
+            - ~www-data/SERVERS
+            - ~xxx/WORKING
+            - ~git/REPOSITORIES
+            - database data?
+                - postgres dumps
+                - couchdb dumps?
+
