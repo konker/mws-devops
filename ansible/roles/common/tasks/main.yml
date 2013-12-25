@@ -1,0 +1,35 @@
+---
+# [FIXME docs]
+
+- name: configure sshd
+  template: src=sshd_config.j2 dest=/etc/ssh/sshd_config
+  notify: restart ssh
+  tags: ssh
+
+- name: add git
+  apt: pkg=git state=latest
+
+- name: add vim
+  apt: pkg=git state=latest
+
+- name: add ntp
+  apt: pkg=ntp state=latest
+  tags: ntp
+
+- name: configure ntp
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  tags: ntp
+  notify: restart ntp
+
+# Add other system tools here ...
+- name: add user konker
+  user: name=konker shell=/bin/zsh generate_ssh_key=yes
+
+- name: authorize konker key for konker
+  authorized_key: user=konker key='$FILE(keys/konker.pub)'
+
+# Add other users here ...
+
+# Application user which will run m-Loma server, etc
+- name: add application user
+  user: name=application createhome=yes shell=/dev/null

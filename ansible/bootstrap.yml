@@ -1,0 +1,11 @@
+---
+# Bootstrap playbook
+# Author Konrad Markus <konker@luxvelocitas.com>
+#
+
+- name: bootstrap admin
+  hosts: all
+  user: root
+
+  roles:
+    - bootstrap

@@ -1,0 +1,23 @@
+---
+# [FIXME docs]
+# Note: assumes the existence of a git repo for the contents of the site
+
+- name: create site directory for $www_host
+  file: path=$www_root/$www_host
+
+- name: create logs directory for $www_host
+  file: path=$www_root/$www_host/logs
+
+- name: clone git repo for $www_host
+  git: repo=git@$git_host:$www_host dest=$www_root/$www_host
+
+- name: add post-commit hook for $www_host
+  template: src=post-commit dest=$www_root/$www_host/.git/hooks/post-commit
+
+- name: nginx site-available for $www_host
+  template: src=nginx_static.j2 dest=/etc/nginx/sites-available/$www_host
+
+- name: enable $www_host
+  link: src=/etc/nginx/sites-available/$www_host /etc/nginx/sites-enabled/$www_host
+  notify: restart nginx
+

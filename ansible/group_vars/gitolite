@@ -1,0 +1,6 @@
+---
+# Variables listed here are applicable to the gitoilte host group
+
+gitolite_home: '/home/git'
+gitolite_pub_key: 'konker.pub'
+

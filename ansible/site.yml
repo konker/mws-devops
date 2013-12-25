@@ -1,0 +1,36 @@
+---
+# Master playbook
+# Author Konrad Markus <konker@luxvelocitas.com>
+#
+
+- name: apply common configuration to all nodes
+  hosts: all
+  user: sysadmin
+  sudo: true
+
+  roles:
+    - common
+
+- name: configure gitolite servers
+  hosts: gitolite
+  user: sysadmin
+  sudo: true
+
+  roles:
+    - gitolite
+
+- name: configure the webservers
+  hosts: webservers
+  user: sysadmin
+  sudo: true
+
+  roles:
+    - web
+
+- name: deploy PostgreSQL and configure the databases
+  hosts: postgresql
+  user: sysadmin
+  sudo: true
+
+  roles:
+    - db.postgresql
