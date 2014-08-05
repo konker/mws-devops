@@ -25,6 +25,9 @@ root    ALL=(ALL:ALL) ALL
 # User for remote system management
 sysadmin ALL=(ALL) NOPASSWD: ALL
 
+# Allow git user to run as
+git ALL=(ALL) NOPASSWD: /home/git/bin/deploy-repo.sh
+
 # See sudoers(5) for more information on "#include" directives:
 
 #includedir /etc/sudoers.d

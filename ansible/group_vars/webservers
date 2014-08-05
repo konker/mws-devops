@@ -1,0 +1,6 @@
+---
+# Variables listed here are applicable to the web host group
+
+www_root: '/home/www/WWW'
+git_host: 'mothership.luxvelocitas.com'
+

@@ -1,25 +1,28 @@
 Devops notes
 ==============================================================================
+- open, P postpome, N don't do, X done
 
-## Pre phase
+## Pre phase (non-ansible)
 - yum/apt update
 - install python
 - install python-apt
 
 ## Boot phase
-- create admin user
-- add admin user to sudoers
-- disable root
+x zsh
+x create admin user
+x add admin user to sudoers
+x disable root
 
 ## Main phase
-- zsh
-- install tmux
-- install git
+x install git
+x install ntp
+x install tmux
+- install gpg
 - create git user
     - install gitolite
-- install gpg
-- create konker user
+x create konker user
     - dotfiles/etc
+x create application user
 - install nginx
 - install web sites
     - as git repos auto pulled -> www
@@ -32,7 +35,7 @@ Devops notes
         - or use tarsnap?
 
 ## Extra phase
-- install irssi
-- install bitlbee
-- install bitlebee-otr
+P install irssi
+P install bitlbee
+P install bitlebee-otr
 

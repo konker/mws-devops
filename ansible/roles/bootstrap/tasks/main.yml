@@ -14,7 +14,7 @@
   tags: bootstrap
 
 - name: authorize konker key for sysadmin
-  authorized_key: user=sysadmin key='$FILE(keys/konker.pub)'
+  authorized_key: user=konker key={{ lookup('file', 'keys/konker.pub') }}
   tags: bootstrap
 
 - name: configure sudoers

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+/bin/su -c "cd $1 && umask 0022 && /usr/bin/git pull origin master" -s /bin/sh $2

@@ -1,0 +1,15 @@
+---
+# [FIXME docs]
+
+- name: create site directory for {{ www_host }}
+  file: path={{ www_root }}/{{ www_host }} state=directory mode=755 owner=www group=www
+
+- name: clone git repo for {{ www_host }}
+  git: repo=git@{{ git_host }}:{{ www_host }} dest={{ www_root }}/{{ www_host }} update=yes
+
+- name: create logs directory for {{ www_host }}
+  file: path={{ www_root }}/{{ www_host }}/logs state=directory mode=755 owner=www group=www
+
+#- name: add post-commit hook for {{ www_host }}
+#  template: src=post-commit dest={{ www_root }}/{{ www_host }}/.git/hooks/post-commit
+

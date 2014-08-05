@@ -1,0 +1,6 @@
+---
+# [FIXME docs]
+
+# static web sites
+- include: nginx_static.yml www_host={{ www_host }}
+

@@ -8,31 +8,36 @@
   user: name=git createhome=yes generate_ssh_key=yes password=$1$k06uhdcu$0OM2JGP/TfQ34AOUpCLFx.
 
 - name: Copy over public key
-  copy: src=keys/$gitolite_pub_key dest=$gitolite_home/.ssh/$gitolite_pub_key owner=git group=git
+  copy: 'src="keys/{{ gitolite_pub_key }}" dest="{{ gitolite_home }}/.ssh/{{ gitolite_pub_key }}" owner=git group=git'
 
 - name: Add git user bin directory
-  file: path=$gitolite_home/bin state=directory mode=755 owner=git group=git
+  file: path="{{ gitolite_home }}/bin" state=directory mode=755 owner=git group=git
 
 - name: Add git user src directory
-  file: path=$gitolite_home/src state=directory mode=755 owner=git group=git
+  file: path="{{ gitolite_home }}/src" state=directory mode=755 owner=git group=git
 
 - name: Clone gitloite source repo
-  git: repo=git://github.com/sitaramc/gitolite dest=$gitolite_home/src/gitolite
+  git: repo=git://github.com/sitaramc/gitolite dest="{{ gitolite_home }}/src/gitolite"
 
 - name: Fix gitolite source repo permissions
-  command: chown -R git.git $gitolite_home/src/gitolite
+  command: chown -R git.git "{{ gitolite_home }}/src/gitolite"
 
 - name: Install gitolite
-  command: $gitolite_home/src/gitolite/install -to $gitolite_home/bin creates=$gitolite_home/bin/gitolite
+  command: '"{{ gitolite_home }}/src/gitolite/install -to {{ gitolite_home }}/bin" creates="{{ gitolite_home }}/bin/gitolite"'
 
 - name: Fix gitolite bin permissions
-  command: chown -R git.git $gitolite_home/bin
+  command: "chown -R git.git {{ gitolite_home }}/bin"
 
   #[FIXME: for some reason this succeeds but doesn't actually do anything]
 - name: gitolite setup
-  command: $gitolite_home/bin/gitolite setup -pk $gitolite_home/.ssh/$gitolite_pub_key creates=$gitolite_home/repositories
+  command: '"{{ gitolite_home }}/bin/gitolite setup -pk {{ gitolite_home }}/.ssh/{{ gitolite_pub_key }}" creates="{{ gitolite_home }}/repositories"'
 
-#- name: Add gitolite.rc
-#  template: src=gitolite.rc.j2 dest=/home/git/.gitolite.rc
+- name: Add gitolite.rc
+  template: src=gitolite.rc.j2 dest=/home/git/.gitolite.rc
 
+- name: Gitolite scripts
+  template: src=deploy-repo.sh.j2 dest=/home/git/bin/deploy-repo.sh
+
+- name: Gitolite scripts file management
+  file: path=/home/git/bin/deploy-repo.sh mode=0755
 

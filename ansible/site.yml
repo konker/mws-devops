@@ -3,19 +3,10 @@
 # Author Konrad Markus <konker@luxvelocitas.com>
 #
 
-- name: apply common configuration to all nodes
-  hosts: all
-  user: sysadmin
-  sudo: true
-
-  roles:
-    - common
-
 - name: configure gitolite servers
   hosts: gitolite
   user: sysadmin
   sudo: true
-
   roles:
     - gitolite
 
@@ -23,14 +14,26 @@
   hosts: webservers
   user: sysadmin
   sudo: true
-
   roles:
     - web
+
+- name: set up website sources
+  hosts: webservers
+  user: www
+  sudo: false
+  tasks:
+    - include: roles/web/tasks/website_source.yml www_host=0-9.fi
+
+- name: configure and deploy websites
+  hosts: webservers
+  user: sysadmin
+  sudo: true
+  tasks:
+      - include: roles/web/tasks/deploy_website.yml www_host=0-9.fi
 
 - name: deploy PostgreSQL and configure the databases
   hosts: postgresql
   user: sysadmin
   sudo: true
-
   roles:
     - db.postgresql

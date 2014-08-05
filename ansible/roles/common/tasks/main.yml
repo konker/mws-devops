@@ -6,11 +6,23 @@
   notify: restart ssh
   tags: ssh
 
+- name: make sure global known_hosts file exists
+  file: path=/etc/ssh/ssh_known_hosts owner=root group=root state=touch
+
+- name: Add known hosts to global known_hosts file
+  lineinfile: dest=/etc/ssh/ssh_known_hosts regexp=^{{ item.host }} line="{{ item.line }}"
+  with_items:
+    - { "host": "github.com", "line": "github.com,207.97.227.239 ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==" }
+    - { "host": "mothership.luxvelocitas.com", "line": "mothership.luxvelocitas.com,176.31.243.40,2001:41d0:8:428::1 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC2J5/yJGwQANGF/jyYdn30L37ZgNGCI9/bFdrvZhG4reObFnLG54J74peH8rmOCSOjqSJTTRETQT8meeAEMElYT0TSROZeCKhjtYbvxn6YZl0MrQFRhVdmEridp0i4DrcpS47vbOmtKctX+rxRAqUhP7GkKfEk8vJcqUrt7NZ+d3m8wEFtJMj7KNK4tE8AnsT3D17UWzG+QmEC+M5nzhYM6J/uE6Yaxj2UJR4PTUe5E64OxVDncmDoUqe9xzhl+XxRBDdYR22/BRNZKec8vWNraGq9gWXT+a3nJHT96yulNlpvF6yKCBlskzHWQ50k/2X88HIzdkxU5SAeqMC69YL3" }
+
 - name: add git
   apt: pkg=git state=latest
 
 - name: add vim
   apt: pkg=git state=latest
+
+- name: add tmux
+  apt: pkg=tmux state=latest
 
 - name: add ntp
   apt: pkg=ntp state=latest
@@ -26,10 +38,24 @@
   user: name=konker shell=/bin/zsh generate_ssh_key=yes
 
 - name: authorize konker key for konker
-  authorized_key: user=konker key='$FILE(keys/konker.pub)'
+  authorized_key: user=konker key={{ lookup('file', 'keys/konker.pub') }}
 
-# Add other users here ...
+# Add other users here
+#...
+
+# Add user for running web server/etc
+- name: add user www
+  user: name=www shell=/bin/bash generate_ssh_key=yes createhome=yes password="$1$(A(DUFNB$fsC46lSIodjftroyAw1tJ0"
+
+- name: authorize konker key for www
+  authorized_key: user=konker key={{ lookup('file', 'keys/konker.pub') }}
 
 # Application user which will run m-Loma server, etc
 - name: add application user
   user: name=application createhome=yes shell=/dev/null
+
+- name: Show SSH public key
+  command: /bin/cat /home/www/.ssh/id_rsa.pub
+  register: cat
+- debug: var=cat.stdout_lines
+

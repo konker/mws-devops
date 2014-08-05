@@ -10,8 +10,6 @@
   notify: restart nginx
   tags: nginx
 
-- name: add user www
-  user: name=www shell=/bin/bash generate_ssh_key=yes createhome=yes
+- name: create www_root
+  file: path="{{ www_root }}" state=directory mode=755 owner=www group=www
 
-# static web sites
-- include: nginx_static.yml host=0-9.fi

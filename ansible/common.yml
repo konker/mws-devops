@@ -1,0 +1,12 @@
+---
+# Common playbook
+# Author Konrad Markus <konker@luxvelocitas.com>
+#
+
+- name: apply common configuration to all nodes
+  hosts: all
+  user: sysadmin
+  sudo: true
+  roles:
+    - common
+

@@ -1,0 +1,14 @@
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server ipv6only=on;
+
+    server_name {{ www_host }};
+    charset utf-8;
+
+    access_log {{ www_root }}/{{ www_host }}/logs/access.log;
+    error_log {{ www_root }}/{{ www_host }}/logs/error.log;
+
+    server_name_in_redirect off;
+
+    root  {{ www_root }}/{{ www_host }}/public;
+}
